@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -8,14 +9,23 @@ import (
 )
 
 func wakatimeData() (WakatimeUserStats, error) {
-	req, err := http.NewRequest(http.MethodGet, wakatimeClient.baseurl+"/users/current/stats/last_7_days", nil)
+	// Use hackatime/v1 path for Hackatime compatibility, falls back to standard WakaTime path
+	endpoint := wakatimeClient.baseurl + "/users/current/stats/last_7_days"
+	if wakatimeClient.baseurl == "https://hackatime.hackclub.com/api/v1/" {
+		endpoint = "https://hackatime.hackclub.com/api/hackatime/v1/users/current/stats/last_7_days"
+	}
+	
+	req, err := http.NewRequest(http.MethodGet, endpoint, nil)
 	if err != nil {
 		return WakatimeUserStats{}, err // Return empty struct and error
 	}
 
+	// Encode API key to base64
+	encodedKey := base64.StdEncoding.EncodeToString([]byte(wakatimeClient.apikey))
+	
 	// Set headers
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("Basic %s", wakatimeClient.apikey))
+	req.Header.Set("Authorization", fmt.Sprintf("Basic %s", encodedKey))
 
 	client := &http.Client{}
 	resp, err := client.Do(req)

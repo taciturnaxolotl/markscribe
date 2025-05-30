@@ -409,9 +409,15 @@ You also need to set your GoodReads user ID in your secrets as `GOODREADS_USER_I
 
 ## Wakatime Authentication
 
-In order to access any wakatime data you need to provide your api key as `WAKATIME_API_KEY`. If you use an 
-alternative wakatime server such as [wakapi](https://github.com/muety/wakapi)
-or [hackatime](https://github.com/hackclub/hackatime) then export the base wakatime compatible route as `WAKATIME_URL` e.g. `https://waka.hackclub.com/api/compat/wakatime/v1/`.
+In order to access any wakatime data you need to provide your api key as `WAKATIME_API_KEY`. 
+
+If you use an alternative wakatime server such as [wakapi](https://github.com/muety/wakapi) or [hackatime](https://github.com/hackclub/hackatime), export the base API URL as `WAKATIME_URL`:
+
+- **Hackatime**: `export WAKATIME_URL=https://hackatime.hackclub.com/api/v1/`
+- **Wakapi**: `export WAKATIME_URL=https://wakapi.dev/api/compat/wakatime/v1/`
+- **WakaTime** (default): No need to set `WAKATIME_URL`
+
+> **Note**: For Hackatime, get your API key from https://hackatime.hackclub.com/my/settings
 
 ## FAQ
 
